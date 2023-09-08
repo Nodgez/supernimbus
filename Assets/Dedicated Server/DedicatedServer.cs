@@ -29,9 +29,7 @@ public class DedicatedServer : MonoBehaviour
             SessionName = sessionName,
             GameMode = GameMode.Server,
             SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
-            Scene = 1,
-            Address = NetAddress.Any(27015),
-            CustomPublicAddress = NetAddress.CreateFromIpPort("10.0.0.1", 27030),
+            Scene = 1,    
             CustomLobbyName = "Main Lobby"
         };
 
