@@ -16,7 +16,7 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log(player.PlayerId + " Joined the game");
         if (runner.IsServer && _playerPrefab != null)
         {
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 15, 1, 0);
+            Vector3 spawnPosition = new Vector3(((player.RawEncoded - 1) % runner.Config.Simulation.DefaultPlayers) * 15, 1, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
 
             _playerMap.Add(player, networkPlayerObject);
