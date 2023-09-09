@@ -22,11 +22,12 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (!Runner.IsServer)
             return;
+
         if (GetInput(out PlayerPositionalData data))
         {
             var d = Math.Sign(data.direction);
             normalizedPosition = Mathf.Clamp01(normalizedPosition + d * Runner.DeltaTime);
-            transform.position = new Vector3(transform.position.x ,Mathf.Lerp(minYPosition, maxYPosition, normalizedPosition));
+            transform.position = new Vector3(transform.position.x ,Mathf.Lerp(minYPosition, maxYPosition, normalizedPosition));        
         }
     }
 }

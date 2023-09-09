@@ -76,7 +76,6 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-        print("Session List updated: server");
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
