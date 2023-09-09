@@ -10,8 +10,6 @@ using UnityEngine.SceneManagement;
 
 public class DedicatedServer : MonoBehaviour
 {
-    public string ip;
-    public string port;
     public string sessionName;
 
     [SerializeField] NetworkRunner runnerPrefab;
@@ -30,12 +28,10 @@ public class DedicatedServer : MonoBehaviour
             GameMode = GameMode.Server,
             SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
             Scene = 1,    
-            CustomLobbyName = "Main Lobby"
+            CustomLobbyName = sessionName
         };
 
-        var result = await runner.StartGame(startArgs);
-        Debug.Log(startArgs.ToString());
-        Debug.Log(result.ToString());
+        var result = await runner.StartGame(startArgs); 
         
         if (!result.Ok)
             Application.Quit();
