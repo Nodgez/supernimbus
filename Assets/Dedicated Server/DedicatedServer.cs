@@ -28,7 +28,8 @@ public class DedicatedServer : MonoBehaviour
             GameMode = GameMode.Server,
             SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
             Scene = 1,    
-            CustomLobbyName = sessionName
+            CustomLobbyName = sessionName,
+            PlayerCount = 2
         };
 
         var result = await runner.StartGame(startArgs); 

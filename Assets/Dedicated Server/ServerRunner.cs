@@ -8,6 +8,7 @@ using UnityEngine;
 public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] NetworkObject _playerPrefab;
+    [SerializeField] NetworkObject _ballPrefab;
 
     private readonly Dictionary<PlayerRef, NetworkObject> _playerMap = new Dictionary<PlayerRef, NetworkObject>();
 
@@ -20,6 +21,9 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
 
             _playerMap.Add(player, networkPlayerObject);
+
+            if(player.RawEncoded == 2)
+                runner.Spawn(_ballPrefab);
         }
     }
 

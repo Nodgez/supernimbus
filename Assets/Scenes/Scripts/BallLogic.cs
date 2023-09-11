@@ -7,7 +7,7 @@ using UnityEngine;
 public class BallLogic : NetworkBehaviour
 {
     [SerializeField]
-    private float speed = 10f;
+    private float speed = 2f;
 
     [SerializeField]
     private LayerMask hitMask;
@@ -15,14 +15,31 @@ public class BallLogic : NetworkBehaviour
     [Networked]
     private Vector3 direction { get; set; }
 
-    private Vector3 velocity;
-
     public override void Spawned()
     {
-        direction = new Vector3(Random.value, Random.value, 0).normalized;
+        direction = new Vector3(-1, 0, 0).normalized;
     }
     public override void FixedUpdateNetwork()
     {
-        var tick = Runner.Tick;
+        if (!Runner.IsServer)
+            return;
+
+        transform.position += direction * speed * Runner.DeltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            direction = new Vector3(direction.x * -1, direction.y, direction.z);
+        }
+        else if (other.CompareTag("Goal"))
+        {
+            //add score somehow
+        }
+        else //has hit the border
+        {
+            direction = new Vector3(direction.x , direction.y * -1, direction.z);
+        }
     }
 }

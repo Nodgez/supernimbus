@@ -92,7 +92,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6679328387022257456}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 5986192431642641913}
   - component: {fileID: 5212223986408664293}
   - component: {fileID: 6134786728689462678}
+  - component: {fileID: 103462400188718813}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -182,4 +183,22 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5212223986408664293}
+  - {fileID: 103462400188718813}
   SimulationBehaviours: []
+--- !u!114 &103462400188718813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6924770535704731123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 825fa410ff341d14fa3846e43d187736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  speed: 2
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 2147483647
