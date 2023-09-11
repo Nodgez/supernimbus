@@ -14,14 +14,8 @@ public class LobbyUI : MonoBehaviour
     {
         get { return instance; }
     }
-    //Create Game
-    [SerializeField] TMPro.TMP_InputField ipInputField_create;
-    [SerializeField] TMPro.TMP_InputField portInputField_create;
-    [SerializeField] TMPro.TMP_InputField sessionInputField_create;
 
-    //Find Netaddress
-    [SerializeField] TMPro.TMP_InputField ipInputField_find;
-    [SerializeField] TMPro.TMP_InputField portInputField_find;
+    [SerializeField] TMPro.TMP_InputField sessionInputField_create;
 
     //Find session
     [SerializeField] TMPro.TMP_InputField sessionInputField_find;
