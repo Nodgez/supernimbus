@@ -41,4 +41,11 @@ public class LobbyUI : MonoBehaviour
         button.GetComponentInChildren<TextMeshProUGUI>().text = sessionInfo.Name;
         button.onClick.AddListener(onClick);
     }
+
+    public void ClearSessionList()
+    {
+        for(int i = sessionButtonParent.childCount - 1; i >= 0; i--) {
+            Destroy(sessionButtonParent.GetChild(i).gameObject);
+        }
+    }
 }
