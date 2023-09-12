@@ -24,20 +24,23 @@ public class DedicatedServer : MonoBehaviour
         Application.targetFrameRate = 30;
 
         var runner = Instantiate(runnerPrefab);
-        var startArgs = new StartGameArgs()
+        for (int i = 0; i < 6; i++)
         {
-            SessionName = sessionName,
-            GameMode = GameMode.Server,
-            SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
-            Scene = 1,    
-            CustomLobbyName = LOBBY_NAME,
-            PlayerCount = 2
-        };
+            var startArgs = new StartGameArgs()
+            {
+                SessionName = string.Format("{0} {1}", sessionName, i),
+                GameMode = GameMode.Server,
+                SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
+                Scene = 1,
+                CustomLobbyName = LOBBY_NAME,
+                PlayerCount = 2
+            };
 
-        var result = await runner.StartGame(startArgs); 
-        
-        if (!result.Ok)
-            Application.Quit();
+            var result = await runner.StartGame(startArgs);
+
+            if (!result.Ok)
+                Application.Quit();
+        }
         
 #endif
         SceneManager.LoadScene(1);
