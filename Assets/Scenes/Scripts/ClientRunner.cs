@@ -140,8 +140,6 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-        if (!runner.IsPlayer)
-            return;
         LobbyUI.Instance.ClearSessionList();
         foreach (var s in sessionList)
         {
