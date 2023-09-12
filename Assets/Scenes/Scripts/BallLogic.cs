@@ -13,13 +13,11 @@ public class BallLogic : NetworkBehaviour
 
     [Networked]
     private Vector3 direction { get; set; }
-    private ScoringLogic scoringLogic;
 
     public override void Spawned()
     {
         if (!Object.HasStateAuthority)
             return;
-        scoringLogic = Runner.GetComponent<ServerRunner>().ScoringLogic;
         direction = new Vector3(-1, 0, 0).normalized;
     }
     public override void FixedUpdateNetwork()
