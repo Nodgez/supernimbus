@@ -17,7 +17,7 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
         if (runner.IsServer && _playerPrefab != null)
         {
             var xPosition = Mathf.Lerp(-8f, 8f, player.RawEncoded - 1);
-            Vector3 spawnPosition = new Vector3(xPosition, 1, 0);
+            Vector3 spawnPosition = new Vector3(xPosition, 0, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
 
             _playerMap.Add(player, networkPlayerObject);

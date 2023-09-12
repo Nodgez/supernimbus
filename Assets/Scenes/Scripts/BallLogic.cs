@@ -11,21 +11,21 @@ public class BallLogic : NetworkBehaviour
     [SerializeField]
     private LayerMask hitMask;
 
-    [Networked]
-    private Vector3 direction { get; set; }
+    private Rigidbody2D rb;
 
     public override void Spawned()
     {
         if (!Object.HasStateAuthority)
             return;
-        direction = new Vector3(-1, 0, 0).normalized;
+
+        rb = GetComponent<Rigidbody2D>();
+        rb.AddForce(Vector2.left * 50f);
     }
     public override void FixedUpdateNetwork()
     {
         if (!Runner.IsServer)
             return;
 
-        transform.position += direction * speed * Runner.DeltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
