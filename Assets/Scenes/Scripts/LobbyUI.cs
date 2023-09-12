@@ -3,6 +3,7 @@ using Fusion.Sockets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -37,7 +38,7 @@ public class LobbyUI : MonoBehaviour
     public void CreateSessionButton(SessionInfo sessionInfo, UnityAction onClick)
     { 
         var button = Instantiate(sessionButtonPreab, sessionButtonParent);
-        button.GetComponentInChildren<Text>().text = sessionInfo.Name;
+        button.GetComponentInChildren<TextMeshProUGUI>().text = sessionInfo.Name;
         button.onClick.AddListener(onClick);
     }
 }
