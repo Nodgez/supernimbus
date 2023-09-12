@@ -1,7 +1,6 @@
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class BallLogic : NetworkBehaviour
@@ -14,9 +13,13 @@ public class BallLogic : NetworkBehaviour
 
     [Networked]
     private Vector3 direction { get; set; }
+    private ScoringLogic scoringLogic;
 
     public override void Spawned()
     {
+        if (!Object.HasStateAuthority)
+            return;
+        scoringLogic = Runner.GetComponent<ServerRunner>().ScoringLogic;
         direction = new Vector3(-1, 0, 0).normalized;
     }
     public override void FixedUpdateNetwork()
@@ -32,10 +35,6 @@ public class BallLogic : NetworkBehaviour
         if (other.CompareTag("Player"))
         {
             direction = new Vector3(direction.x * -1, direction.y, direction.z);
-        }
-        else if (other.CompareTag("Goal"))
-        {
-            //add score somehow
         }
         else //has hit the border
         {

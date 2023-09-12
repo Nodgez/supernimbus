@@ -8,39 +8,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LobbyLogic : MonoBehaviour, INetworkRunnerCallbacks
+public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    private NetworkRunner _runner;
-    private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+    private NetworkRunner localRunner;
 
-    [SerializeField] GameObject playerPrefab;
-
-
-    void Awake() {
-        _runner = gameObject.AddComponent<NetworkRunner>();
-        _runner.ProvideInput = true;
-        if (_runner.IsClient)
-            JoinLobby();
+    void Connect() {
+        if (localRunner != null)
+            return;
+        localRunner = gameObject.AddComponent<NetworkRunner>();
+        localRunner.ProvideInput = true;
     }
 
-    async void JoinLobby()
-    {
-        var result = await _runner.JoinSessionLobby(SessionLobby.ClientServer, "Main Lobby");
-        if(result.Ok)
-        {
-            print("Lobby OK");
-        }
+    void Disconnect()
+    { 
+        if( localRunner == null )
+            return;
+        localRunner = null;
     }
 
-    async void HostGame(StartGameArgs createArgs)
-    {
-        await _runner.StartGame(createArgs);        
-    }
-
-    async void FindGameSessionName(string sessionName = "kevin_session")
+    async void FindGameSessionName(string sessionName)
     {
         print("Finding session " + sessionName + ".......");
-        var result = await _runner.StartGame(
+        var result = await localRunner.StartGame(
             new StartGameArgs()
             {
                 GameMode = GameMode.Client,
@@ -52,13 +41,7 @@ public class LobbyLogic : MonoBehaviour, INetworkRunnerCallbacks
         print(result.ErrorMessage);
     }
 
-    public void CreateGame()
-    {
-        var createArgs = LobbyUI.Instance.CreateGameArgs();
-        HostGame(createArgs);
-    }
-
-    public void joingamewithsessionname()
+    public void JoinGameWithSessionName()
     {
         var sessionname = LobbyUI.Instance.FindGame();
         FindGameSessionName(sessionname);
@@ -71,7 +54,7 @@ public class LobbyLogic : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
     {
-
+        Disconnect();
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
@@ -86,7 +69,7 @@ public class LobbyLogic : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnDisconnectedFromServer(NetworkRunner runner)
     {
-
+        Disconnect();
     }
 
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
@@ -116,26 +99,13 @@ public class LobbyLogic : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         print(runner.SessionInfo.ToString());
-
         LobbyUI.Instance.TurnOff();
-        if (runner.IsServer)
-        {
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 15, 1, 0);
-            NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
-
-            _spawnedCharacters.Add(player, networkPlayerObject);
-        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         LobbyUI.Instance.TurnOn();
-        if (runner.IsServer)
-            if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
-            {
-                runner.Despawn(networkObject);
-                _spawnedCharacters.Remove(player);
-            }
+        Disconnect();//if we're left alone in the session then remove ourselves
     }
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data)

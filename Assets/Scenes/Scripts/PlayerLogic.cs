@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerLogic : NetworkBehaviour
@@ -11,11 +13,26 @@ public class PlayerLogic : NetworkBehaviour
     private float minYPosition;
     private float normalizedPosition;
 
+    [SerializeField] Material player1Material, player2Material;
+
+    [Networked(OnChanged = nameof(OnChanged))]
+    public int Score { get; set; }
 
     private void Awake()
     {
         maxYPosition = Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y;
         minYPosition = Camera.main.ViewportToWorldPoint(new Vector3(0, 0)).y;
+    }
+
+    public override void Spawned()
+    {
+        if (!Runner.IsClient)
+            return;
+
+        var playerRenderer = this.GetComponentInChildren<SpriteRenderer>();
+
+        var playerRef = Object.InputAuthority;
+        playerRenderer.material = playerRef.RawEncoded == 1 ? player1Material : player2Material;
     }
 
     public override void FixedUpdateNetwork()
@@ -29,6 +46,18 @@ public class PlayerLogic : NetworkBehaviour
             normalizedPosition = Mathf.Clamp01(normalizedPosition + d * Runner.DeltaTime);
             transform.position = new Vector3(transform.position.x ,Mathf.Lerp(minYPosition, maxYPosition, normalizedPosition));        
         }
+    }
+
+    private static void OnChanged(Changed<PlayerLogic> playerLogic)
+    {
+        //Update the UI
+        GameUI.Instance.UpdateScore(playerLogic.Behaviour.Object.InputAuthority, playerLogic.Behaviour.Score);
+
+        if (playerLogic.Behaviour.Score >= 3)
+        { 
+            
+        } 
+        
     }
 }
 

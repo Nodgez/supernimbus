@@ -7,18 +7,17 @@ using UnityEngine;
 
 public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] NetworkObject _playerPrefab;
+    [SerializeField] PlayerLogic _playerPrefab;
     [SerializeField] NetworkObject _ballPrefab;
 
-    private readonly Dictionary<PlayerRef, NetworkObject> _playerMap = new Dictionary<PlayerRef, NetworkObject>();
-
+    private readonly Dictionary<PlayerRef, PlayerLogic> _playerMap = new Dictionary<PlayerRef, PlayerLogic>();
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log(player.PlayerId + " Joined the game");
         if (runner.IsServer && _playerPrefab != null)
-        {
-            Vector3 spawnPosition = new Vector3(((player.RawEncoded - 1) % runner.Config.Simulation.DefaultPlayers) * 15, 1, 0);
-            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+        {         
+            Vector3 spawnPosition = new Vector3(((player.RawEncoded - 1) % runner.Config.Simulation.DefaultPlayers), 1, 0);
+            PlayerLogic networkPlayerObject = runner.Spawn(_playerPrefab.Object, spawnPosition, Quaternion.identity, player).GetComponent<PlayerLogic>();
 
             _playerMap.Add(player, networkPlayerObject);
 
@@ -29,11 +28,9 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log(player.PlayerId + " left the game");
-
         if (_playerMap.TryGetValue(player, out var character))
         {
-            runner.Despawn(character);
+            runner.Despawn(character.Object);
             _playerMap.Remove(player);
         }
     }
