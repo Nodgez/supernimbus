@@ -13,6 +13,8 @@ public class PlayerLogic : NetworkBehaviour
     private float minYPosition;
     private float normalizedPosition;
 
+    private Rigidbody2D rb;
+
     [SerializeField] Material player1Material, player2Material;
 
     [Networked(OnChanged = nameof(OnChanged))]
@@ -22,6 +24,8 @@ public class PlayerLogic : NetworkBehaviour
     {
         maxYPosition = Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y;
         minYPosition = Camera.main.ViewportToWorldPoint(new Vector3(0, 0)).y;
+
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public override void Spawned()
@@ -44,7 +48,9 @@ public class PlayerLogic : NetworkBehaviour
         {
             var d = Math.Sign(data.direction);
             normalizedPosition = Mathf.Clamp01(normalizedPosition + d * Runner.DeltaTime);
-            transform.position = new Vector3(transform.position.x ,Mathf.Lerp(minYPosition, maxYPosition, normalizedPosition));        
+            var newPosition = new Vector2(transform.position.x, Mathf.Lerp(minYPosition, maxYPosition, normalizedPosition));
+            rb.MovePosition(newPosition);
+            
         }
     }
 

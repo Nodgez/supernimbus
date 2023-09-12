@@ -28,16 +28,16 @@ public class BallLogic : NetworkBehaviour
         transform.position += direction * speed * Runner.DeltaTime;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         print("Ball has been triggered");
-        if (other.CompareTag("Player"))
-        {
-            direction = new Vector3(direction.x * -1, direction.y, direction.z);
-        }
-        else //has hit the border
-        {
-            direction = new Vector3(direction.x , direction.y * -1, direction.z);
-        }
+        //if (other.CompareTag("Player"))
+        //{
+        //    direction = new Vector3(direction.x * -1, direction.y, direction.z);
+        //}
+        //else //has hit the border
+        //{
+        //    direction = new Vector3(direction.x, direction.y * -1, direction.z);
+        //}
     }
 }
