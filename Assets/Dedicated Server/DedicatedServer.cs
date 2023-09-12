@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 
 public class DedicatedServer : MonoBehaviour
 {
+    public const string LOBBY_NAME = "Super Nimbus Lobby";
+
     public string sessionName;
 
     [SerializeField] NetworkRunner runnerPrefab;
@@ -28,7 +30,7 @@ public class DedicatedServer : MonoBehaviour
             GameMode = GameMode.Server,
             SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
             Scene = 1,    
-            CustomLobbyName = sessionName,
+            CustomLobbyName = LOBBY_NAME,
             PlayerCount = 2
         };
 

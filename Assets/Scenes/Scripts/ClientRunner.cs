@@ -12,6 +12,11 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner localRunner;
 
+    void Awake()
+    {
+        JoinLobby(DedicatedServer.LOBBY_NAME);
+    }
+
     void Connect() {
         if (localRunner != null)
             return;
@@ -26,8 +31,20 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
         localRunner = null;
     }
 
-    async void FindGameSessionName(string sessionName)
+    async void JoinLobby(string lobbyID)
     {
+        Connect();
+
+        var result =  await localRunner.JoinSessionLobby(SessionLobby.Custom, lobbyID);
+
+        if (!result.Ok)
+        {
+            print("failed to connect to lobby");
+        }
+    }
+
+    async void FindGameSessionName(string sessionName)
+    {        
         print("Finding session " + sessionName + ".......");
         var result = await localRunner.StartGame(
             new StartGameArgs()
@@ -35,16 +52,14 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
                 GameMode = GameMode.Client,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             });
 
-        print(result.ErrorMessage);
-    }
-
-    public void JoinGameWithSessionName()
-    {
-        var sessionname = LobbyUI.Instance.FindGame();
-        FindGameSessionName(sessionname);
+        if (!result.Ok)
+            Disconnect();
+        else {
+            print("OK");
+        }
     }
 
     #region network runner callbacks
@@ -126,6 +141,15 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         print("Session List Updated: Client");
+        foreach (var s in sessionList)
+        {
+            if (!s.IsOpen || !s.IsValid)
+                continue;
+
+            LobbyUI.Instance.CreateSessionButton(s, () => {
+                FindGameSessionName(s.Name);
+            });
+        }
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
