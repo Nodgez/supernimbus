@@ -3,6 +3,7 @@ using Fusion.Sockets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
@@ -21,6 +22,9 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
 
             _playerMap.Add(player, networkPlayerObject);
+
+            var goal = GameObject.FindObjectsOfType<Goal>().First(x => !x.Initialized);
+            goal.Initialize(networkPlayerObject.GetComponent<PlayerLogic>(), xPosition);
 
             if(player.RawEncoded == 2)
                 runner.Spawn(_ballPrefab);

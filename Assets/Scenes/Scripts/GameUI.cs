@@ -20,9 +20,9 @@ public class GameUI : MonoBehaviour
 
     public void UpdateScore(int playerRef, int score)
     {
-        if (playerRef == 1)
+        if (playerRef == 0)
             player1Score.text = score.ToString();
-        else if (playerRef == 2)
+        else if (playerRef == 1)
             player2Score.text = score.ToString();
     }
 }
