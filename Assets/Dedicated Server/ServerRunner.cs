@@ -7,17 +7,18 @@ using UnityEngine;
 
 public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] PlayerLogic _playerPrefab;
+    [SerializeField] NetworkObject _playerPrefab;
     [SerializeField] NetworkObject _ballPrefab;
 
-    private readonly Dictionary<PlayerRef, PlayerLogic> _playerMap = new Dictionary<PlayerRef, PlayerLogic>();
+    private readonly Dictionary<PlayerRef, NetworkObject> _playerMap = new Dictionary<PlayerRef, NetworkObject>();
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log(player.PlayerId + " Joined the game");
         if (runner.IsServer && _playerPrefab != null)
-        {         
-            Vector3 spawnPosition = new Vector3(((player.RawEncoded - 1) % runner.Config.Simulation.DefaultPlayers), 1, 0);
-            PlayerLogic networkPlayerObject = runner.Spawn(_playerPrefab.Object, spawnPosition, Quaternion.identity, player).GetComponent<PlayerLogic>();
+        {
+            var xPosition = Mathf.Lerp(-8f, 8f, player.RawEncoded - 1);
+            Vector3 spawnPosition = new Vector3(xPosition, 1, 0);
+            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
 
             _playerMap.Add(player, networkPlayerObject);
 
@@ -30,7 +31,7 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (_playerMap.TryGetValue(player, out var character))
         {
-            runner.Despawn(character.Object);
+            runner.Despawn(character);
             _playerMap.Remove(player);
         }
     }

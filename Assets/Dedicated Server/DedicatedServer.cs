@@ -23,25 +23,33 @@ public class DedicatedServer : MonoBehaviour
 #if UNITY_SERVER
         Application.targetFrameRate = 30;
 
+        //for (int i = 0; i < 6; i++)
+        //{
+        var i = 0;
+        var fullSessionName = string.Format("{0} {1}", sessionName, i);
         var runner = Instantiate(runnerPrefab);
-        for (int i = 0; i < 6; i++)
+        runner.name = fullSessionName;
+        var startArgs = new StartGameArgs()
         {
-            var startArgs = new StartGameArgs()
-            {
-                SessionName = string.Format("{0} {1}", sessionName, i),
-                GameMode = GameMode.Server,
-                SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
-                Scene = 1,
-                CustomLobbyName = LOBBY_NAME,
-                PlayerCount = 2
-            };
+            SessionName = fullSessionName,
+            GameMode = GameMode.Server,
+            SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
+            Scene = 1,
+            CustomLobbyName = LOBBY_NAME,
+            PlayerCount = 2
+        };
 
-            var result = await runner.StartGame(startArgs);
+        print(string.Format("Starting session {0} {1}.....", sessionName, i));
+        var result = await runner.StartGame(startArgs);
+        if (result.Ok)
+            print(string.Format("Session {0} {1} started!", sessionName, i));
+        else
+            print(string.Format("Session {0} {1} NOT started!", sessionName, i));
 
-            if (!result.Ok)
-                Application.Quit();
-        }
-        
+        if (!result.Ok)
+            Application.Quit();
+        //}
+
 #endif
         SceneManager.LoadScene(1);
     }

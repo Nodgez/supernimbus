@@ -30,6 +30,7 @@ public class BallLogic : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Ball has been triggered");
         if (other.CompareTag("Player"))
         {
             direction = new Vector3(direction.x * -1, direction.y, direction.z);

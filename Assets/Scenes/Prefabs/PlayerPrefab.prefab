@@ -220,6 +220,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   player1Material: {fileID: 2100000, guid: 561b8349f051165489f8ab35ea379e33, type: 2}
   player2Material: {fileID: 2100000, guid: 4d20e63f5b2733e4c81792b360c4ec21, type: 2}
+  _Score: 0
 --- !u!61 &2737429600034633540
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -230,7 +231,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
