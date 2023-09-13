@@ -41,14 +41,9 @@ public class BallLogic : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        print("Ball has been triggered");
-        //if (other.CompareTag("Player"))
-        //{
-        //    direction = new Vector3(direction.x * -1, direction.y, direction.z);
-        //}
-        //else //has hit the border
-        //{
-        //    direction = new Vector3(direction.x, direction.y * -1, direction.z);
-        //}
+        if (!Object.HasStateAuthority)
+            return;
+
+        rb.velocity *= 1.05f;
     }
 }
