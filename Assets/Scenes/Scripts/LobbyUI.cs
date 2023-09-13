@@ -17,6 +17,7 @@ public class LobbyUI : MonoBehaviour
         get { return instance; }
     }
 
+    [SerializeField] Button lobbyButton;
     [SerializeField] Button sessionButtonPreab;
     [SerializeField] RectTransform sessionButtonParent;
 

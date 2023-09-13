@@ -12,11 +12,6 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner localRunner;
 
-    void Awake()
-    {
-        JoinLobby(DedicatedServer.LOBBY_NAME);
-    }
-
     void Connect() {
         if (localRunner != null)
             return;
@@ -30,6 +25,11 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
             return;
         localRunner.Shutdown();
         localRunner = null;
+    }
+
+    public void JoinLobby()
+    {
+        JoinLobby(DedicatedServer.LOBBY_NAME);
     }
 
     async void JoinLobby(string lobbyID)
@@ -155,7 +155,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-
+        LobbyUI.Instance.TurnOn();
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)

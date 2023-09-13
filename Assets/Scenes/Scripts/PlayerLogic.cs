@@ -32,7 +32,7 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (!Runner.IsClient)
             return;
-
+        Score = 0;
         var playerRenderer = this.GetComponentInChildren<SpriteRenderer>();
 
         var playerRef = Object.InputAuthority;
