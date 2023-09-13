@@ -15,7 +15,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
     void Connect() {
         if (localRunner != null)
             return;
-        localRunner = gameObject.AddComponent<NetworkRunner>();
+        localRunner = new GameObject("Runner Instance").AddComponent<NetworkRunner>();//create a new game object so this doesn't get destroyed on shutdown
         localRunner.ProvideInput = true;
     }
 
@@ -23,7 +23,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
     { 
         if( localRunner == null )
             return;
-        localRunner.Shutdown(false);
+        localRunner.Shutdown();
         localRunner = null;
     }
 

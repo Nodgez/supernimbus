@@ -65,7 +65,7 @@ public class PlayerLogic : NetworkBehaviour
         if (playerLogic.Behaviour.Score >= 3)
         {
             // I have won, shutdown    
-            playerLogic.Behaviour.Runner.Shutdown(false);
+            playerLogic.Behaviour.Runner.Shutdown();
         } 
         
     }
