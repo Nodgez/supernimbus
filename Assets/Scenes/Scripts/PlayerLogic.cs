@@ -59,9 +59,13 @@ public class PlayerLogic : NetworkBehaviour
         //Update the UI
         GameUI.Instance.UpdateScore(playerLogic.Behaviour.Object.InputAuthority, playerLogic.Behaviour.Score);
 
+        if (!playerLogic.Behaviour.HasStateAuthority)
+            return;
+
         if (playerLogic.Behaviour.Score >= 3)
-        { 
-            
+        {
+            // I have won, shut down    
+            playerLogic.Behaviour.Runner.Shutdown();
         } 
         
     }

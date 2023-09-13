@@ -11,7 +11,10 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] NetworkObject _playerPrefab;
     [SerializeField] NetworkObject _ballPrefab;
 
-    private readonly Dictionary<PlayerRef, NetworkObject> _playerMap = new Dictionary<PlayerRef, NetworkObject>();
+    private bool isGameRunning = false;
+
+    private readonly Dictionary<PlayerRef, NetworkObject> playerMap = new Dictionary<PlayerRef, NetworkObject>();
+    private NetworkObject ballInstance;
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log(player.PlayerId + " Joined the game");
@@ -21,23 +24,28 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
             Vector3 spawnPosition = new Vector3(xPosition, 0, 0);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
 
-            _playerMap.Add(player, networkPlayerObject);
+            playerMap.Add(player, networkPlayerObject);
 
             var goal = GameObject.FindObjectsOfType<Goal>().First(x => !x.Initialized);
             goal.Initialize(networkPlayerObject.GetComponent<PlayerLogic>(), xPosition);
 
-            if(player.RawEncoded == 2)
-                runner.Spawn(_ballPrefab);
+            if (player.RawEncoded == 2)
+            {
+                ballInstance = runner.Spawn(_ballPrefab);
+                isGameRunning = true;
+            }
         }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        if (_playerMap.TryGetValue(player, out var character))
+        if (playerMap.TryGetValue(player, out var character))
         {
             runner.Despawn(character);
-            _playerMap.Remove(player);
+            playerMap.Remove(player);
         }
+        isGameRunning = false;
+        runner.Despawn(ballInstance);
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
