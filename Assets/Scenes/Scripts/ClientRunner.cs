@@ -23,7 +23,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
     { 
         if( localRunner == null )
             return;
-        localRunner.Shutdown();
+        localRunner.Shutdown(false);
         localRunner = null;
     }
 
