@@ -1963,6 +1963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1Score: {fileID: 854712171}
   player2Score: {fileID: 902227795}
+  gameUI_CG: {fileID: 1560913227}
 --- !u!4 &1054705960
 Transform:
   m_ObjectHideFlags: 0
@@ -2638,6 +2639,7 @@ GameObject:
   - component: {fileID: 1560913225}
   - component: {fileID: 1560913224}
   - component: {fileID: 1560913223}
+  - component: {fileID: 1560913227}
   m_Layer: 5
   m_Name: GamePlayUI
   m_TagString: Untagged
@@ -2727,6 +2729,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &1560913227
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560913222}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1603919650
 GameObject:
   m_ObjectHideFlags: 0

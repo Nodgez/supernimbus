@@ -32,9 +32,15 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (!Runner.IsClient)
             return;
-        Score = 0;
-        var playerRenderer = this.GetComponentInChildren<SpriteRenderer>();
 
+        if (!HasInputAuthority)
+        {
+            GameUI.Instance.TurnOn();
+            Score = 0;
+        }
+
+
+        var playerRenderer = this.GetComponentInChildren<SpriteRenderer>();
         var playerRef = Object.InputAuthority;
         playerRenderer.material = playerRef.RawEncoded == 1 ? player1Material : player2Material;
     }
