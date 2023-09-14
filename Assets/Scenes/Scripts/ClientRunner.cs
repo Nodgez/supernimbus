@@ -26,6 +26,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
             return;
         localRunner.Shutdown();
         localRunner = null;
+        SceneManager.LoadScene(1);//load the lobby scene again
     }
 
     public void JoinLobby()
