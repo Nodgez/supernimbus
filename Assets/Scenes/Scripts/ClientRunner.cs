@@ -26,7 +26,6 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
             return;
         localRunner.Shutdown();
         localRunner = null;
-        SceneManager.LoadScene(1);//load the lobby scene again
     }
 
     public void JoinLobby()
@@ -120,7 +119,6 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        LobbyUI.Instance.TurnOn();
         Disconnect();//if we're left alone in the session then remove ourselves
     }
 
@@ -155,7 +153,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-        LobbyUI.Instance.TurnOn();
+        SceneManager.LoadScene(0);//load the lobby
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
