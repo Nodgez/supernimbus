@@ -11,7 +11,7 @@ public class PlayerLogic : NetworkBehaviour
 {
     private float maxYPosition;
     private float minYPosition;
-    private float normalizedPosition;
+    private float normalizedPosition = 0.5f;
 
     private Rigidbody2D rb;
 
