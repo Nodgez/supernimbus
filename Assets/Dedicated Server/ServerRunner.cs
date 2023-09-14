@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -60,7 +61,7 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-
+        SceneManager.LoadScene(0);//reload the server scene to set it back up again
     }
 
     public void OnConnectedToServer(NetworkRunner runner)

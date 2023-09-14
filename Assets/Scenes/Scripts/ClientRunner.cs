@@ -52,9 +52,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
             new StartGameArgs()
             {
                 GameMode = GameMode.Client,
-                SessionName = sessionName,
-                Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+                SessionName = sessionName
             });
 
         if (!result.Ok)
