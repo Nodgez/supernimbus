@@ -11,8 +11,6 @@ public class Game_Authentication : MonoBehaviour
     [SerializeField] TMP_InputField userName_input;
     [SerializeField] TMP_InputField password_input;
 
-    const string LEADERBOARD_ID = "17442";
-
     private IEnumerator loginProcess;
 
     public void StatLoginProcess()
@@ -35,8 +33,6 @@ public class Game_Authentication : MonoBehaviour
             }
 
             print("White Label Login successfull");
-
-            
         });
     }
 
@@ -65,20 +61,6 @@ public class Game_Authentication : MonoBehaviour
         });
     }
 
-    public void UpdateLeaderBoardWins()
-    {
-        LootLockerSDKManager.SubmitScore(string.Empty, 0, LEADERBOARD_ID, response =>
-        {
-            if (!response.success)
-            {
-                print("Submit score failed\n" + response.errorData.message);
-                return;
-            }
-
-            //find Leaderboard UI and add player to it
-        });
-    }
-
 
     private void CheckForSession()
     {
@@ -86,7 +68,7 @@ public class Game_Authentication : MonoBehaviour
         {
             if (response)
             {
-                print("session is valid, you can start a game sessioni");
+                print("session is valid, you can start a game session");
             }
             else {
                 print("Session is NOT VALID, we should show the login form");
