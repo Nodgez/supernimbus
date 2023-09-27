@@ -11,14 +11,48 @@ public class Leaderboards : MonoBehaviour
 
     [SerializeField] private GameObject leaderboardEntryPrefab;
     [SerializeField] private RectTransform leaderboardEntryParent;
-    public void SendScoreToLootLocker(int score)
+    [SerializeField] private CanvasGroup leaderboardCanvasGroup;
+
+    [SerializeField] Game_Authentication Authentication;
+
+    private int localMemeberScore = 0;
+
+    private void OnEnable()
     {
-        LootLockerSDKManager.SubmitScore(string.Empty, score,LEADERBOARD_ID, (response) =>
-        { });
+        Authentication.OnSessionStart += CacheCurrentMemberScore;
+    }
+
+    private void OnDisable()
+    {
+        Authentication.OnSessionStart -= CacheCurrentMemberScore;
+    }
+
+    public void CacheCurrentMemberScore()
+    {
+        LootLockerSDKManager.GetMemberRank(LEADERBOARD_ID, string.Empty, (response) =>
+        {
+            if (!response.success)
+                return;
+
+            localMemeberScore = response.score;
+        });
+    }
+
+    public void SendScoreToLootLocker()
+    {
+        localMemeberScore += 1;
+        LootLockerSDKManager.SubmitScore(string.Empty, localMemeberScore, LEADERBOARD_ID, (response) =>
+        {
+            print("Score submitted: " + response.success);
+        });
     }
 
     public void OpenLeaderboard()
     {
+        leaderboardCanvasGroup.alpha = 1;
+        leaderboardCanvasGroup.interactable = true;
+        leaderboardCanvasGroup.blocksRaycasts = true;
+
         LootLockerSDKManager.GetScoreList(LEADERBOARD_ID, 10, (response) => {
             if (!response.success)
                 return;
@@ -34,5 +68,15 @@ public class Leaderboards : MonoBehaviour
                 entry.transform.Find("Score").GetComponent<TMPro.TextMeshProUGUI>().text = p.score.ToString();
             }
         });
+    }
+
+    public void CloseLeaderboard()
+    {
+        for (int i = leaderboardEntryParent.childCount - 1; i >= 0; i--)
+            Destroy(leaderboardEntryParent.GetChild(i).gameObject);
+
+        leaderboardCanvasGroup.alpha = 0;
+        leaderboardCanvasGroup.interactable = false;
+        leaderboardCanvasGroup.blocksRaycasts = false;
     }
 }

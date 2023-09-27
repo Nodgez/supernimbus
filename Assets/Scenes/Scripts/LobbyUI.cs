@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -14,17 +15,17 @@ public class LobbyUI : MonoBehaviour
     private static LobbyUI instance;
     public static LobbyUI Instance
     {
-        get { return instance; }
+        get {
+            if (instance == null)
+                instance = FindObjectOfType<LobbyUI>();
+
+            return instance;
+        }
     }
 
-    [SerializeField] Button lobbyButton;
     [SerializeField] Button sessionButtonPreab;
     [SerializeField] RectTransform sessionButtonParent;
 
-    private void Awake()
-    {
-        instance = this;
-    }
 
     public void TurnOff()
     { 

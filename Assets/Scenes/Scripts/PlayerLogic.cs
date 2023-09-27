@@ -64,6 +64,10 @@ public class PlayerLogic : NetworkBehaviour
     {
         //Update the UI
         GameUI.Instance.UpdateScore(playerLogic.Behaviour.Object.InputAuthority, playerLogic.Behaviour.Score);
+        if (playerLogic.Behaviour.Score >= 3)
+        {
+            FindObjectOfType<Leaderboards>().SendScoreToLootLocker();
+        }
 
         if (!playerLogic.Behaviour.HasStateAuthority)
             return;

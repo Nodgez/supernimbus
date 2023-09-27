@@ -24,6 +24,7 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
     { 
         if( localRunner == null )
             return;
+
         localRunner.Shutdown();
         localRunner = null;
     }
@@ -43,6 +44,8 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
         {
             print("failed to connect to lobby");
         }
+
+        Alert.Instance.ShowMessage("Lobby Joined");
     }
 
     async void FindGameSessionName(string sessionName)
