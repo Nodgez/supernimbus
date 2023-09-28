@@ -13,7 +13,8 @@ public class DedicatedServer : MonoBehaviour
 {
     public const string LOBBY_NAME = "Super Nimbus Lobby";
 
-    public string sessionName;
+    [SerializeField] bool useSessionName = false;
+    [SerializeField] string sessionName;
 
     [SerializeField] NetworkRunner runnerPrefab;
 
@@ -23,12 +24,14 @@ public class DedicatedServer : MonoBehaviour
 
 #if UNITY_SERVER
         Application.targetFrameRate = 30;
+        var runTimeSessionName = useSessionName ? sessionName : System.Guid.NewGuid().ToString();
+
 
         var runner = Instantiate(runnerPrefab);
-        runner.name = sessionName;
+        runner.name = runTimeSessionName;
         var startArgs = new StartGameArgs()
         {
-            SessionName = sessionName,
+            SessionName = runTimeSessionName,
             GameMode = GameMode.Server,
             SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
             Scene = 1,
@@ -36,12 +39,12 @@ public class DedicatedServer : MonoBehaviour
             PlayerCount = 2
         };
 
-        print(string.Format("Starting session {0}.....", sessionName));
+        print(string.Format("Starting session {0}.....", runTimeSessionName));
         var result = await runner.StartGame(startArgs);
         if (result.Ok)
-            print(string.Format("Session {0} started!", sessionName));
+            print(string.Format("Session {0} started!", runTimeSessionName));
         else
-            print(string.Format("Session {0} NOT started!", sessionName));
+            print(string.Format("Session {0} NOT started!", runTimeSessionName));
 
         if (!result.Ok)
             Application.Quit();
