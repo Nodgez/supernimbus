@@ -12,8 +12,6 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] NetworkObject _playerPrefab;
     [SerializeField] NetworkObject _ballPrefab;
 
-    private bool isGameRunning = false;
-
     private readonly Dictionary<PlayerRef, NetworkObject> playerMap = new Dictionary<PlayerRef, NetworkObject>();
     private NetworkObject ballInstance;
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -33,7 +31,6 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
             if (player.RawEncoded == 2)
             {
                 ballInstance = runner.Spawn(_ballPrefab);
-                isGameRunning = true;
             }
         }
     }
@@ -45,7 +42,6 @@ public class ServerRunner : MonoBehaviour, INetworkRunnerCallbacks
             runner.Despawn(character);
             playerMap.Remove(player);
         }
-        isGameRunning = false;
         runner.Despawn(ballInstance);
     }
 

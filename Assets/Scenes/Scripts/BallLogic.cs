@@ -6,7 +6,6 @@ using UnityEngine;
 public class BallLogic : NetworkBehaviour
 {
     private float maxSpeed = 30f;
-    private float minSpeed = 5f;
 
     [SerializeField]
     private LayerMask hitMask;
