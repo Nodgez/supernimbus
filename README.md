@@ -7,6 +7,7 @@
 - Join Lobby
 - Join Session
 - W,S for player movement
+- Score 3 to end the game
 
 ## Server:
 
