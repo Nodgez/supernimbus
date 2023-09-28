@@ -44,8 +44,6 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
         {
             print("failed to connect to lobby");
         }
-
-        Alert.Instance.ShowMessage("Lobby Joined");
     }
 
     async void FindGameSessionName(string sessionName)
@@ -116,8 +114,10 @@ public class ClientRunner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
+        Alert.Instance.ShowMessage("Lobby Joined");
         print(runner.SessionInfo.ToString());
         LobbyUI.Instance.TurnOff();
+
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

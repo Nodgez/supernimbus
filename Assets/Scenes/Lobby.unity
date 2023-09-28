@@ -637,7 +637,6 @@ GameObject:
   m_Component:
   - component: {fileID: 324157673}
   - component: {fileID: 324157674}
-  - component: {fileID: 324157675}
   m_Layer: 5
   m_Name: Sign Up
   m_TagString: Untagged
@@ -694,18 +693,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!225 &324157675
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 324157672}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &397356713
 GameObject:
   m_ObjectHideFlags: 0
@@ -2411,8 +2398,8 @@ CanvasGroup:
   m_GameObject: {fileID: 922455941}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &973169625
 GameObject:
@@ -3153,6 +3140,7 @@ GameObject:
   - component: {fileID: 1110478977}
   - component: {fileID: 1110478976}
   - component: {fileID: 1110478975}
+  - component: {fileID: 1110478979}
   m_Layer: 5
   m_Name: Loot Locker Canvas
   m_TagString: Untagged
@@ -3243,6 +3231,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &1110478979
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110478974}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1135031650
 GameObject:
   m_ObjectHideFlags: 0
@@ -4326,7 +4326,7 @@ MonoBehaviour:
   userName_input: {fileID: 1709345582}
   password_input: {fileID: 534793240}
   leaderboardButton: {fileID: 691188064}
-  canvasGroup: {fileID: 324157675}
+  canvasGroup: {fileID: 1110478979}
 --- !u!4 &1719264565
 Transform:
   m_ObjectHideFlags: 0

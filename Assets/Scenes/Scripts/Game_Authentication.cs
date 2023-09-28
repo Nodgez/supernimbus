@@ -63,13 +63,12 @@ public class Game_Authentication : MonoBehaviour
                 if(!response.LoginResponse.success)
                 {
                     print("Error while logging in\n" + response.LoginResponse.errorData.message);
-                    Alert.Instance.ShowMessage("Login failed");
                 }
                 else if(!response.SessionResponse.success){
                     print("Error while starting session\n" + response.SessionResponse.errorData.message);
-                    Alert.Instance.ShowMessage("Login Failed");
                 }
                 print(response.errorData.message);
+                Alert.Instance.ShowMessage(response.errorData.message);
                 return;
             }
             OnSessionStart?.Invoke();
@@ -119,12 +118,16 @@ public class Game_Authentication : MonoBehaviour
     private void SetLoginView()
     {
         canvasGroup.interactable = true;
+        canvasGroup.alpha = 1.0f;
+        canvasGroup.blocksRaycasts = true;
         leaderboardButton.interactable = false;
         LobbyUI.Instance.TurnOff();
     }
 
     private void SetJoinSessionView() {
         canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0.0f;
         leaderboardButton.interactable = true;
         LobbyUI.Instance.TurnOn();
     }
