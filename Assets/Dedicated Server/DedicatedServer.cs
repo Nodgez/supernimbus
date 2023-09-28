@@ -5,6 +5,7 @@ using Fusion.Sockets;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,7 +13,8 @@ public class DedicatedServer : MonoBehaviour
 {
     public const string LOBBY_NAME = "Super Nimbus Lobby";
 
-    public string sessionName;
+    [SerializeField] bool useSessionName = false;
+    [SerializeField] string sessionName;
 
     [SerializeField] NetworkRunner runnerPrefab;
 
@@ -22,16 +24,14 @@ public class DedicatedServer : MonoBehaviour
 
 #if UNITY_SERVER
         Application.targetFrameRate = 30;
+        var runTimeSessionName = useSessionName ? sessionName : System.Guid.NewGuid().ToString();
 
-        //for (int i = 0; i < 6; i++)
-        //{
-        var i = 0;
-        var fullSessionName = string.Format("{0} {1}", sessionName, i);
+
         var runner = Instantiate(runnerPrefab);
-        runner.name = fullSessionName;
+        runner.name = runTimeSessionName;
         var startArgs = new StartGameArgs()
         {
-            SessionName = fullSessionName,
+            SessionName = runTimeSessionName,
             GameMode = GameMode.Server,
             SceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
             Scene = 1,
@@ -39,16 +39,15 @@ public class DedicatedServer : MonoBehaviour
             PlayerCount = 2
         };
 
-        print(string.Format("Starting session {0} {1}.....", sessionName, i));
+        print(string.Format("Starting session {0}.....", runTimeSessionName));
         var result = await runner.StartGame(startArgs);
         if (result.Ok)
-            print(string.Format("Session {0} {1} started!", sessionName, i));
+            print(string.Format("Session {0} started!", runTimeSessionName));
         else
-            print(string.Format("Session {0} {1} NOT started!", sessionName, i));
+            print(string.Format("Session {0} NOT started!", runTimeSessionName));
 
         if (!result.Ok)
             Application.Quit();
-        //}
 
 #endif
         SceneManager.LoadScene(1);
